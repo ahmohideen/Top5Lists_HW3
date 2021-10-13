@@ -13,6 +13,7 @@ export const GlobalStoreContext = createContext({});
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const GlobalStoreActionType = {
+    ADD_NEW_LIST: "ADD_NEW_LIST",
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
@@ -41,6 +42,18 @@ export const useGlobalStore = () => {
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
+            //CREATE NEW LIST
+            case GlobalStoreActionType.ADD_NEW_LIST: {
+                return setStore({
+                    idNamePairs: payload.idNamePairs,//this should also be payload?
+                    currentList: payload.top5List,
+                    newListCounter: store.newListCounter+1,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                })
+            }
+
             // LIST UPDATE OF ITS NAME
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
@@ -103,6 +116,45 @@ export const useGlobalStore = () => {
     // THESE ARE THE FUNCTIONS THAT WILL UPDATE OUR STORE AND
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
+
+    //THIS FUNCTION IS FOR ADDING A NEW LIST
+    store.addNewList = function () {
+        async function asyncAddNewList() {
+            let payload = { 
+                "name": "Untitled"+store.newListCounter,
+                "items": ["?", "?", "?", "?", "?"]
+            }
+            let response = await api.createTop5List(payload);
+            console.log(response);
+            if(response.data.success) {
+                console.log("new list has been created in database!");
+                let top5List = response.data.top5List;
+                let temp = {
+                    _id: response.data.top5List["_id"],
+                    name: response.data.top5List["name"]
+                }
+                console.log("Temp payload: "+temp);
+                console.log(store.idNamePairs);
+                let tempArray = store.idNamePairs;
+                tempArray.push(temp);
+                console.log(temp);
+                //i think we immediately switch into editing mode when we make a new list
+                //gotta use this --> GlobalStoreActionType.ADD_NEW_LIST at some point
+                
+                //we need a payload for this too i think
+                storeReducer({
+                    type: GlobalStoreActionType.ADD_NEW_LIST,
+                    payload: {
+                        idNamePairs: tempArray,
+                        top5List: null
+                    }
+                });
+                store.setCurrentList(temp["_id"]);
+            }
+        }
+
+        asyncAddNewList();
+    }
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.changeListName = function (id, newName) {

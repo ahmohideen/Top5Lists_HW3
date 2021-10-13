@@ -8,6 +8,11 @@ import DeleteModal from './DeleteModal'
     
     @author McKilla Gorilla
 */
+
+// const handleAddClick = () => {
+//     console.log("add list button clicked");
+// }
+
 const ListSelector = () => {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
@@ -26,10 +31,23 @@ const ListSelector = () => {
             />
         ))
     }
+
+    let handleAddClick = () => {
+        console.log("clicked")
+        if(store) {
+            console.log(store.idNamePairs);
+            console.log(store.idNamePairs[0]["_id"]);
+            console.log(store.idNamePairs[0]["name"]);
+            console.log(store.newListCounter);
+            store.addNewList();
+        }
+    }
+
     return (
         <div id="top5-list-selector">
             <div id="list-selector-heading">
                 <input
+                    onClick={handleAddClick}
                     type="button"
                     id="add-list-button"
                     className="top5-button"
