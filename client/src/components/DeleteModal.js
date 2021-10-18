@@ -13,12 +13,20 @@ function DeleteModal() {
     const { store } = useContext(GlobalStoreContext);
     let name = "";
     if (store.currentList) {
-        name = store.currentList.name;
+        //name = store.currentList.name;
+        //name = store.listMarkedForDeletion;
+        console.log(store.listMarkedForDeletion);
     }
     function handleDeleteList(event) {
-        store.deleteMarkedList();
+        console.log(store.listMarkedForDeletion);
+        console.log(store.currentList);
+        console.log(event.target);
+        console.log("delete clicked");
+        let listID = store.currentList;
+        store.deleteMarkedList(listID);
     }
     function handleCloseModal(event) {
+        console.log("close clicked")
         store.hideDeleteListModal();
     }
     return (
@@ -28,7 +36,7 @@ function DeleteModal() {
             data-animation="slideInOutLeft">
             <div className="modal-dialog">
                 <header className="dialog-header">
-                    Delete the {name} Top 5 List?
+                    Delete the {store.listMarkedForDeletion} Top 5 List?
                 </header>
                 <div id="confirm-cancel-container">
                     <button

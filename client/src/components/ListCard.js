@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStoreContext } from '../store'
+//import DeleteModal from './DeleteModal'
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -51,6 +52,33 @@ function ListCard(props) {
         setText(event.target.value );
     }
 
+    function handleDelete(event){
+        event.stopPropagation();
+        console.log(event.target.id);
+        let id = event.target.id;
+        id = id.split("-")[2];
+        console.log("clicked");
+        store.setListMarkedForDeletion(idNamePair.name, id);
+        showDeleteListModal(event);
+    }
+
+    function showDeleteListModal(event){
+        //event.stopPropagation();
+        // let id = event.target.id;
+        // id = id.split("-")[2];
+        //console.log(store.listMarkedForDeletion);
+        //store.setCurrentList(id);
+        // store.getTop5ListById(id);
+        // console.log("now current list is...")
+        // console.log(store.currentList);
+       //console.log(idNamePair.name);
+        //store.setListMarkedForDeletion(idNamePair.name);
+        //console.log(store.listMarkedForDeletion);
+        //console.log(event.target.id);
+        let modal = document.getElementById("delete-modal");
+        modal.classList.add("is-visible");
+    }
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -77,6 +105,7 @@ function ListCard(props) {
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
                 value={"\u2715"}
+                onClick={handleDelete}
             />
             <input
                 disabled={cardStatus}
