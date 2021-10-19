@@ -21,6 +21,7 @@ function EditToolbar() {
     function handleClose() {
         history.push("/");
         store.closeCurrentList();
+        store.updateToolbarButtons();
     }
     let editStatus = false;
     if (store.isListNameEditActive) {

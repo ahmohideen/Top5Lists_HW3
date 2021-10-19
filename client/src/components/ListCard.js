@@ -87,6 +87,9 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+    else{
+        cardStatus = false;
+    }
     let cardElement =
         <div
             id={idNamePair._id}
