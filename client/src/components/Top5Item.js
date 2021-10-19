@@ -13,6 +13,7 @@ function Top5Item(props) {
     const [ text, setText ] = useState(props.text);
     let [ oldText, setOldText] = useState(props.text);
 
+    store.updateToolbarButtons();
 
     function handleDragStart(event) {
         event.dataTransfer.setData("item", event.target.id);

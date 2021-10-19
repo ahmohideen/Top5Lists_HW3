@@ -37,6 +37,9 @@ function ListCard(props) {
         if (newActive) {
             store.setIsListNameEditActive();
         }
+        //store.updateHomepageButtons();
+        let addButton = document.getElementById("add-list-button");
+        addButton.classList.add("top5-button-disabled");
         setEditActive(newActive);
     }
 
@@ -46,6 +49,8 @@ function ListCard(props) {
             store.changeListName(id, text);
             toggleEdit();
         }
+        let addButton = document.getElementById("add-list-button");
+        addButton.classList.remove("top5-button-disabled");
     }
 
     function handleUpdateText(event) {
@@ -83,13 +88,13 @@ function ListCard(props) {
     if (selected) {
         selectClass = "selected-list-card";
     }
-    let cardStatus = false;
-    if (store.isListNameEditActive) {
-        cardStatus = true;
-    }
-    else{
-        cardStatus = false;
-    }
+    // let cardStatus = false;
+    // if (store.isListNameEditActive) {
+    //     cardStatus = true;
+    // }
+    // else{
+    //     cardStatus = false;
+    // }
     let cardElement =
         <div
             id={idNamePair._id}
@@ -103,7 +108,7 @@ function ListCard(props) {
                 {idNamePair.name}
             </span>
             <input
-                disabled={cardStatus}
+                //disabled={cardStatus}
                 type="button"
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
@@ -111,7 +116,7 @@ function ListCard(props) {
                 onClick={handleDelete}
             />
             <input
-                disabled={cardStatus}
+                //disabled={cardStatus}
                 type="button"
                 id={"edit-list-" + idNamePair._id}
                 className="list-card-button"
