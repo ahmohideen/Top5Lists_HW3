@@ -136,6 +136,7 @@ function Top5Item(props) {
     if (draggedTo) {
         itemClass = "top5-item-dragged-to";
     }
+
     let top5Item = <div
         id={'item-' + (index + 1)}
         className={itemClass}
