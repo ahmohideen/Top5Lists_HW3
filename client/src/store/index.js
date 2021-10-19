@@ -28,6 +28,7 @@ export const GlobalStoreActionType = {
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
 const tps = new jsTPS();
+let counter = 0;//jesus christ
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
 // AVAILABLE TO THE REST OF THE APPLICATION
@@ -171,9 +172,10 @@ export const useGlobalStore = () => {
     store.addNewList = function () {
         async function asyncAddNewList() {
             let payload = { 
-                "name": "Untitled"+store.newListCounter,
+                "name": "Untitled"+counter,
                 "items": ["?", "?", "?", "?", "?"]
             }
+            counter = counter+1;
             let response = await api.createTop5List(payload);
             console.log(response);
             if(response.data.success) {
@@ -183,6 +185,7 @@ export const useGlobalStore = () => {
                     _id: response.data.top5List["_id"],
                     name: response.data.top5List["name"]
                 }
+                console.log(store.newListCounter);
                 console.log("Temp payload: "+temp);
                 console.log(store.idNamePairs);
                 let tempArray = store.idNamePairs;
@@ -208,6 +211,12 @@ export const useGlobalStore = () => {
 
     store.deleteMarkedList = function (id) {
         async function asyncDeleteMarkedList(id) {
+            // await api.deleteTop5ListById(id).then(response => api.deleteTop5ListById(id))
+            // .then(response=> {
+            //     console.log('The response is: ' + response);
+            //     return true;
+            // })
+            //await api.deleteTop5ListById(id).then
             let response = await api.deleteTop5ListById(id);
             if(response.data.success){
                 console.log("list has been deleted!");
@@ -348,6 +357,7 @@ export const useGlobalStore = () => {
                 id: id
             }
         });
+        return true;
     }
 
     store.addMoveItemTransaction = function (start, end) {
