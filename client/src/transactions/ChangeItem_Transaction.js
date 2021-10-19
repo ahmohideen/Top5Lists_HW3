@@ -19,10 +19,12 @@ export default class ChangeItem_Transaction extends jsTPS_Transaction {
     }
 
     doTransaction() {
+        console.log("doing change item transaction...")
         this.store.updateItem(this.id, this.newText);
     }
 
     undoTransaction() {
+        console.log("undoing change item transaction...")
         this.store.updateItem(this.id, this.oldText);
     }
 }

@@ -410,9 +410,11 @@ export const useGlobalStore = () => {
     }
     store.undo = function () {
         tps.undoTransaction();
+        store.updateToolbarButtons();
     }
     store.redo = function () {
         tps.doTransaction();
+        store.updateToolbarButtons();
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
@@ -433,6 +435,43 @@ export const useGlobalStore = () => {
     store.hideDeleteListModal = function () {
         let modal = document.getElementById("delete-modal");
         modal.classList.remove("is-visible");
+    }
+
+    store.disableButton = (id) => {
+        let button = document.getElementById(id);
+        button.classList.add("top5-button-disabled");
+
+    }
+
+    store.enableButton = (id) => {
+        let button = document.getElementById(id);
+        button.classList.remove("top5-button-disabled");
+    }
+    
+    store.updateToolbarButtons = () => {
+        if (!this.tps.hasTransactionToUndo()) {
+            this.disableButton("undo-button");
+        }
+        else {
+            console.log("updating...");
+            this.enableButton("undo-button");
+        }
+
+        if (!this.tps.hasTransactionToRedo()) {
+            this.disableButton("redo-button");
+        }
+        else {
+            console.log("updating...");
+            this.enableButton("redo-button");
+        }
+        
+        if(this.state.currentList != null){
+            this.enableButton("close-button")
+        }
+        else{
+            this.disableButton("close-button")
+        }
+        //sum for add list? idk
     }
 
     // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
