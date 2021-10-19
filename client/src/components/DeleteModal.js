@@ -23,6 +23,8 @@ function DeleteModal() {
         console.log(event.target);
         console.log("delete clicked");
         let listID = store.currentList;
+        console.log(listID)
+        console.log(store.listMarkedForDeletion);
         store.deleteMarkedList(listID);
     }
     function handleCloseModal(event) {
